@@ -75,6 +75,9 @@ B1 = @(z) c3 + c4*z;
 A2 = @(z) c5 + c6*z;    % 0..h1
 B2 = @(z) b*sqrt(z/h1);
 
+% calculates the length of the shoulder segment given a specified height e
+fun_length = @(e) (e + b1 + d_x.*tan(gamma))./tan(gamma);
+
 
 % Mass and volume
 
@@ -90,7 +93,16 @@ u  = @(e) (at1 + (j2-e).*tan(alpha))./at(e);
 sarg = @(e) sqrt(1-u(e).^2);
     
 fun = @(e) bt(e).*at(e).*(PI/2-u(e).*sarg(e)-asin(u(e)));
-v_T = integral(fun,-j3,j2);
+
+fun_cutout_length = @(e) (fun_length(e) < (at(e) - at1) ) .* fun_length(e) + (fun_length(e) >= (at(e) - at1) ) .* (at(e) - at1);
+
+fun_ = @(e) bt(e).*at(e).*( ( at1 + fun_cutout_length(e) ) ./ at(e) .* sqrt(1 - (at1 + fun_cutout_length(e)).^2 ./ at(e).^2) + asin ( (at1 + fun_cutout_length(e) ) ./at(e)) ...
+				- u(e).*sarg(e) - asin(u(e)));
+				
+				
+integral(fun,-j3,j2)
+v_T = integral(fun_,-j3,-b1) + integral(fun,-b1,j2)
+
 
 m1  = gamma_1*v1;
 m2  = gamma_2*v2;
@@ -112,7 +124,13 @@ e_bar = e_barm/mass;
 
 fun3 = @(e) at(e).*bt(e).*(at1.*(u(e).*sarg(e) + asin(u(e))-PI/2) +...
     2/3.*at(e).*sarg(e).^3);
-JT = integral(fun3,-j3,j2);
+
+fun3_ = @(e) at(e) .* bt(e) .* ( 2/3 .* at(e) .* sarg(e).^3 - 2/3 .* at(e) .* sqrt( 1 - (at1 + fun_cutout_length(e) ).^2 ./ at(e).^2 ).^3 + ...
+					at1 .* ( u(e) .* sarg(e) + asin(u(e)) - (at1 + fun_cutout_length(e) ) ./ at(e) .* sqrt( 1 - ( at1 + fun_cutout_length(e) ).^2 ./ at(e).^2) - asin( (at1 + fun_cutout_length(e) ) ./ at(e)) ) );
+
+integral(fun3,-j3,j2)
+JT = integral(fun3_,-j3,-b1) + integral(fun3,-b1,j2)
+
 zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
     c14*((h1+h_x)^3-h1^3)/3 + c2*c4*((h1+h_x)^4-h1^4)/4)+...
     zeta2*m2-m_s*(d_x-3*b1/16)-JT*gamma_1;      %INCLUDED gamma_1. Mistake? in JT equation p39 Hatze. Included in fortran code equation for zetab
@@ -195,6 +213,7 @@ O1O7 = 0.8*l_t+e_bar*(d_x+at1)/(d_x-zeta_bar);
 O7O8 = (d_x+at1)/cos(theta7);
 
 person.segment(S).Rglobal = R*R7;
+person.segment(S).Rlocal = person.segment(S).Rlocal*R7;
 person.segment(S).theta = theta7;
 
 Oshoulder = B + person.segment(1).Rglobal*[0;0;O1O7];
@@ -251,11 +270,11 @@ if person.plot || person.segment(S).plot
     'humradius',hr,...
     opts{:})
   
-  plot_sphere(Oarm,hr,'longrange',[0 -1],opts{:})
+  plot_sphere(Oarm,hr,'longrange',[0 lr_sign],opts{:})
   
   % medial wedge
   
-  Nw = 10;
+  Nw = 50; % broken for larger!!
   hrange = linspace(h1,0,Nw);
   
   for nn = 1:Nw-1
@@ -286,7 +305,7 @@ if person.plot || person.segment(S).plot
 
   % cutout plates
   
-  ne = 20;
+  ne = 100;
   co_x = nan(ne,2*ne);
   co_y = nan(ne,2*ne);
   co_z = nan(ne,2*ne); 
@@ -297,7 +316,7 @@ if person.plot || person.segment(S).plot
   
   for nn = 1:ne
     ze  = zz(nn);
-    ml_points = linspace(cutout_medial(ze),at(ze),ne);
+    ml_points = linspace(cutout_medial(ze), fun_cutout_length(ze)+at1 ,ne);
     y3  = ellipse_points(ze,ml_points);
     s3 = [ [ze*ones(size(y3));y3;ml_points], [ze*ones(size(y3));-fliplr(y3);fliplr(ml_points)] ];
     
@@ -315,7 +334,7 @@ if person.plot || person.segment(S).plot
       [co_y(nn-1,:) co_y(nn,end:-1:1)],...
       [co_z(nn-1,:) co_z(nn,end:-1:1)],...
       [0 0 0],...
-      'facecolor',person.segment(S).colour,...
+      'facecolor',hsv2rgb( [0.8 , 0.5 , 0.8] ),... %person.segment(S).colour,...
       'facealpha',person.segment(S).opacity(1),...
       'edgealpha',person.segment(S).opacity(2)...
       )
