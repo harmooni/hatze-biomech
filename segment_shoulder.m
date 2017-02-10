@@ -100,8 +100,8 @@ fun_ = @(e) bt(e).*at(e).*( ( at1 + fun_cutout_length(e) ) ./ at(e) .* sqrt(1 - 
 				- u(e).*sarg(e) - asin(u(e)));
 				
 				
-integral(fun,-j3,j2)
-v_T = integral(fun_,-j3,-b1) + integral(fun,-b1,j2)
+%integral(fun,-j3,j2)
+v_T = integral(fun_,-j3,-b1) + integral(fun,-b1,j2);
 
 
 m1  = gamma_1*v1;
@@ -128,8 +128,8 @@ fun3 = @(e) at(e).*bt(e).*(at1.*(u(e).*sarg(e) + asin(u(e))-PI/2) +...
 fun3_ = @(e) at(e) .* bt(e) .* ( 2/3 .* at(e) .* sarg(e).^3 - 2/3 .* at(e) .* sqrt( 1 - (at1 + fun_cutout_length(e) ).^2 ./ at(e).^2 ).^3 + ...
 					at1 .* ( u(e) .* sarg(e) + asin(u(e)) - (at1 + fun_cutout_length(e) ) ./ at(e) .* sqrt( 1 - ( at1 + fun_cutout_length(e) ).^2 ./ at(e).^2) - asin( (at1 + fun_cutout_length(e) ) ./ at(e)) ) );
 
-integral(fun3,-j3,j2)
-JT = integral(fun3_,-j3,-b1) + integral(fun3,-b1,j2)
+%integral(fun3,-j3,j2)
+JT = integral(fun3_,-j3,-b1) + integral(fun3,-b1,j2);
 
 zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
     c14*((h1+h_x)^3-h1^3)/3 + c2*c4*((h1+h_x)^4-h1^4)/4)+...
