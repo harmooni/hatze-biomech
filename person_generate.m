@@ -136,11 +136,11 @@ person.q = [ ...
   0; 0; 0;   ...  7,  8,  9 : orientation of segment 2 (head-neck)
   0; -90;    ... 10, 11     : left shoulder
   0;  90; 0; ... 12, 13, 14 : left arm
-  0;  90;    ... 15, 16     : left forearm
+  0;  0;    ... 15, 16     : left forearm
   0; 0;      ... 17, 18     : left hand
   0;  90;    ... 19, 20     : right shoulder
   0; -90; 0; ... 21, 22, 23 : right arm
-  0; -90;    ... 24, 25     : right forearm
+  0; 0;    ... 24, 25     : right forearm
   0; 0;      ... 26, 27     : right hand
   0; 0; 0;   ... 28, 29, 30 : abdomen-pelvis
   0; 0; 0;   ... 31, 32, 33 : left thigh
@@ -397,11 +397,11 @@ person.segment( 2).angle = person.q(7:9);
 person.segment( 3).angle = [person.q(10:11); 0];
 person.segment( 4).angle = person.q(12:14);
 person.segment( 5).angle = [person.q(15); 0; person.q(16)];
-person.segment( 6).angle = [person.q(17:18); 0];
+person.segment( 6).angle = [person.q(17:18); 90];
 person.segment( 7).angle = [person.q(19:20); 0];
 person.segment( 8).angle = person.q(21:23);
 person.segment( 9).angle = [person.q(24); 0; person.q(25)];
-person.segment(10).angle = [person.q(26:27); 0];
+person.segment(10).angle = [person.q(26:27); -90];
 person.segment(11).angle = person.q(28:30);
 person.segment(12).angle = person.q(31:33);
 person.segment(13).angle = [person.q(34); 0; 0];

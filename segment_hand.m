@@ -103,7 +103,7 @@ if person.plot || person.segment(S).plot
 
   opt = {'colour',person.segment(S).colour,'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2)};
 
-  plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,'rotate',R,opt{:});
+  plot_rect_prism(P,[2*b10 2*a10],[2.52*b10 h],-hh,'rotate',R,opt{:});
 
   if S == 6 % left
     s = h;

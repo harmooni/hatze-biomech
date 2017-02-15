@@ -3,7 +3,7 @@
 clear all
 clc
 
-person = person_generate('data','hatze_meas.txt');
+person = person_generate('data','hatze_meas_lechner.txt');
 
 %% Count measurements
 
@@ -18,7 +18,7 @@ fprintf('-----------------------\nTotal measurements: %i\n======================
 
 %% Plot isometric view of the model
 
-person = person_generate('data','hatze_meas.txt');
+%person = person_generate('data','hatze_meas.txt');
 
 figure(1); clf; hold on
 set(gcf,'color','white')
