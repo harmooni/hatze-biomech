@@ -147,10 +147,10 @@ for s = [t]
       fprintf('                   ([ %3.3f , %3.3f , %3.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(2),1000*person.segment(s).Minertia_hatze(3))
     end
     if ~isempty(person.segment(s).theta)
-      fprintf('Theta: %2.3f°\n',person.segment(s).theta*180/pi)
+      fprintf('Theta: %2.3f rad\n',person.segment(s).theta) %*180/pi)
     end
     if ~isempty(person.segment(s).theta_hatze)
-      fprintf('      (%2.3f°)\n',person.segment(s).theta_hatze*180/pi)
+      fprintf('      (%2.3f rad)\n',person.segment(s).theta_hatze) %*180/pi)
     end
 
   end

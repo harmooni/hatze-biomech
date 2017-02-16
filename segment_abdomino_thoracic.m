@@ -54,7 +54,7 @@ person.segment(S+1).origin = O1+person.segment(S).Rlocal*[0;0;l];
 g = (1+0.3*i_m)*d_11;
 
 % symmetric chest until the end of the lungs:
-w(indt)  = Y1(indt)/2;
+w(indt)  = 0; %Y1(indt)/2;
 b(indt)  = Y1(indt)/2;
 
 % interpolate width minus shoulder; implies 10 disks:
@@ -65,7 +65,8 @@ a(ii) = a(5)+(0.42*a(5)-a(1)).*l/N*(4-ii)/(0.35*l-z_h)+...
     (2*a(1)-1.42*a(5))*((l./N*(4-ii))/(0.35*l-z_h)).^2;
 
 %male or female
-jj = round(h/(l/N));
+jj = floor(h/(l/N)); % Integer Conversion != Rounding
+
 if h==0
     b_j = 0;
 else
@@ -81,7 +82,7 @@ person.segment(S).b = b;
 
 % Lungs:
 a2 = a(indt).*(c(1)-c(indt));
-b2 = (b(indt)-a(indt)/6).*sqrt(1-(c(indt)./c(1)).^2);
+b2 = (b(indt)-a(indt)./6).*sqrt(1-(c(indt)./c(1)).^2);
 
 
 %% Calculations
