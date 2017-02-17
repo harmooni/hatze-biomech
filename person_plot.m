@@ -3,7 +3,7 @@
 clear all
 clc
 
-person = person_generate('data','hatze_meas_lechner.txt');
+person = person_generate('data','hatze_meas.txt');
 
 %% Count measurements
 
@@ -102,7 +102,7 @@ person.segment(17).offset = [0; 0; -50]/1000;
 figure(2); clf; hold on
 set(gcf,'color','white')
 
-person_generate(person,'plot',true);
+%person_generate(person,'plot',true);
 
 axis equal
 view(153,23)
@@ -120,7 +120,7 @@ pbaspect([1 4 4])
 figure(3); clf; hold on
 set(gcf,'color','white')
 
-person_generate(person,'plot',true);
+%person_generate(person,'plot',true);
 
 axis equal
 view(153,23)

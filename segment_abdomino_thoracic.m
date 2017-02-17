@@ -188,7 +188,7 @@ if person.plot || person.segment(S).plot
   for ii = indt
     ph = l-ii*l/N; % plate height
 
-    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) w(ii)],l/N,opt{:},'rotate',RR);
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',RR);
 
     % lungs:
     plot_parabolic_plate(O1+RR*[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
