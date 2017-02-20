@@ -153,7 +153,7 @@ person.q = [ ...
 
 %% Inline functions
 
-person.solve_ellipse = @solve_ellipse;
+person.solve_ellipse = @solve_ellipse_mod;
 person.resample = @(person,S,x) measurement_resample(x,person.meas{S}.length,10,person.segment(S).Nmeas,person.segment(S).Ncalc);
 person.plot_points = @(p,varargin) plot3( p(1,:), p(2,:), p(3,:) , varargin{:} );
 person.cardan_rotation = @(a) ...
@@ -204,6 +204,26 @@ function b = solve_ellipse(a,u)
 %  b(ind_large)= sqrt(abs((uu./(pi*sqrt(2))).^2-aa.^2));
 %end
 b=sqrt(abs(0.5*(u/pi).^2-a.^2));
+end
+
+%% Solve ellipse: see BIOLIMB INFORMATION RELEASE 8101
+function b = solve_ellipse_mod(a,u)
+
+crit = u/(4*a);
+b = 0;
+
+if ((crit - 1.001) < 0 )
+	b = 0.0001 *a;
+else
+	if ( (crit - 1.570796) <= 0 )
+			exnum = log( ( crit - 1.0)/0.570796) / 1.435;
+			b = a.*exp(exnum);
+	else % Second semi-axis is longer than first one, a.
+		b = sqrt( abs((u/4.4428829).^2 - a.^2 ) );
+	
+	end
+end
+
 end
 
 
