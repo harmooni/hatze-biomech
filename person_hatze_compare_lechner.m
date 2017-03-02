@@ -197,8 +197,8 @@ for s = [t]
     if ~isempty(person.segment(s).theta)
       if abs( (person.segment(s).theta-person.segment(s).theta_hatze )/person.segment(s).theta_hatze) > thresh
         disp(['--- ',person.segment(s).name,' ---'])
-        fprintf('Theta: %2.3f°\n',person.segment(s).theta*180/pi)
-        fprintf('      (%2.3f°)\n',person.segment(s).theta_hatze*180/pi)
+        fprintf('Theta: %2.3f rad\n',person.segment(s).theta) %*180/pi)
+        fprintf('      (%2.3f rad)\n',person.segment(s).theta_hatze) %*180/pi)
       end
     end
   %  fprintf('\n')

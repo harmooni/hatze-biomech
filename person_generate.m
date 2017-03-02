@@ -131,29 +131,29 @@ person.segment(17).prior = 16;
 %% Joint angles
 
 person.q = [ ...
-  0; 0; 0;   ...  1,  2,  3 : global position
-  0; 0; 0;   ...  4,  5,  6 : orientation of segment 1 (abdomen-thorax)
-  0; 0; 0;   ...  7,  8,  9 : orientation of segment 2 (head-neck)
-  0; -90;    ... 10, 11     : left shoulder
-  0;  90; 0; ... 12, 13, 14 : left arm
-  0;  0;    ... 15, 16     : left forearm
-  0; 0;      ... 17, 18     : left hand
-  0;  90;    ... 19, 20     : right shoulder
-  0; -90; 0; ... 21, 22, 23 : right arm
-  0; 0;    ... 24, 25     : right forearm
-  0; 0;      ... 26, 27     : right hand
-  0; 0; 0;   ... 28, 29, 30 : abdomen-pelvis
-  0; 0; 0;   ... 31, 32, 33 : left thigh
-  0;         ... 34         : left knee
-  90; 0;      ... 35, 36     : left foot
-  0; 0; 0;   ... 37, 38, 39 : right thigh
-  0;         ... 40         : right knee
-  90; 0;      ... 41, 42     : right foot
+   0;   0; 0;   ...  1,  2,  3 : global position
+   0;   0; 0;   ...  4,  5,  6 : orientation of segment 1 (abdomen-thorax)
+   0;   0; 0;   ...  7,  8,  9 : orientation of segment 2 (head-neck)
+   0; -90;    ... 10, 11     : left shoulder
+   0;  90; 0; ... 12, 13, 14 : left arm
+   0;   0;    ... 15, 16     : left forearm
+   0;   0;      ... 17, 18     : left hand
+   0;  90;    ... 19, 20     : right shoulder
+   0; -90; 0; ... 21, 22, 23 : right arm
+   0;   0;    ... 24, 25     : right forearm
+   0;   0;      ... 26, 27     : right hand
+   0;   0; 0;   ... 28, 29, 30 : abdomen-pelvis
+   0;   0; 0;   ... 31, 32, 33 : left thigh
+   0;         ... 34         : left knee
+  90;   0;      ... 35, 36     : left foot
+   0;   0; 0;   ... 37, 38, 39 : right thigh
+   0;         ... 40         : right knee
+  90;   0;      ... 41, 42     : right foot
 ];
 
 %% Inline functions
 
-person.solve_ellipse = @solve_ellipse_mod;
+person.solve_ellipse = @solve_ellipse; % or @solve_ellipse_mod
 person.resample = @(person,S,x) measurement_resample(x,person.meas{S}.length,10,person.segment(S).Nmeas,person.segment(S).Ncalc);
 person.plot_points = @(p,varargin) plot3( p(1,:), p(2,:), p(3,:) , varargin{:} );
 person.cardan_rotation = @(a) ...
@@ -206,7 +206,7 @@ function b = solve_ellipse(a,u)
 b=sqrt(abs(0.5*(u/pi).^2-a.^2));
 end
 
-%% Solve ellipse: see BIOLIMB INFORMATION RELEASE 8101
+%% Solve ellipse: see BIOLIMB INFORMATION RELEASE 8101  (Hatze used alog)
 function b = solve_ellipse_mod(a,u)
 
 crit = u/(4*a);
@@ -437,7 +437,7 @@ end
 person.segment(1).Rglobal = person.segment(1).Rlocal;
 for S = 2:person.N
   person.segment(S).Rglobal = ...
-    person.segment( person.segment(S).prior ).Rglobal * person.segment(S).Rlocal;
+  person.segment(S).Rlocal * person.segment( person.segment(S).prior ).Rglobal;
 end
 
 end
